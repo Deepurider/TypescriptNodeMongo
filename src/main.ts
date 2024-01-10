@@ -1,21 +1,22 @@
 import express from "express";
 import { json } from "body-parser";
-import { connectToDatabase } from "./config/database-config";
-import { User } from "./model/user";
+import { User } from "./models/user";
+import connectDB from "./db";
+import dotenv from "dotenv";
 
-connectToDatabase();
+dotenv.config();
+connectDB();
 const app = express();
-app.use(json());
+
+app.on("error", (error: any) => {
+  console.log("Error: ", error);
+});
+
 app.listen(3000, () => {
   console.log("Server is listening  on port 3000");
 });
 
-const routes = express.Router();
-routes.get("/", (req, res) => {
-  return res.sendFile(__dirname + "/static/index.html");
-});
-app.use(routes);
-
+app.use(json());
 const adminRoutes = express.Router();
 adminRoutes.get("/api/user", async (req, res) => {
   const { id } = req.query;
@@ -25,37 +26,10 @@ adminRoutes.get("/api/user", async (req, res) => {
 
 adminRoutes.put("/api/user", async (req, res) => {
   const { firstName, lastName, id } = req.body;
-  // const userId = "659d7627fad7d552d967e766";
-  // const contactId = "659d7627fad7d552d967e767";
-  // const addressId = "659d7627fad7d552d967e768";
-  // const updateData = "This is updated Data";
-
   const users = await User.find({ _id: id }).updateOne(
     {},
     { firstName: firstName, lastName: lastName }
   );
-
-  // update data with nested child node.
-  // const updatedUser = await User.updateOne(
-  //   {
-  //     _id: userId,
-  //     "contacts._id": contactId,
-  //     "contacts.addresses._id": addressId,
-  //   },
-  //   {
-  //     $set: {
-  //       "contacts.$.addresses.$[addr].addressLine1": "This is address line 2",
-  //       "contacts.$.addresses.$[addr].addressLine2": "This is address line 1",
-  //     },
-  //   },
-  //   {
-  //     arrayFilters: [
-  //       {
-  //         "addr._id": addressId,
-  //       },
-  //     ],
-  //   }
-  // );
   return res.json(users);
 });
 
@@ -71,3 +45,41 @@ adminRoutes.delete("/api/user", async (req, res) => {
   return res.json(users);
 });
 app.use(adminRoutes);
+
+/*
+adminRoutes.put("/api/user", async (req, res) => {
+  const { firstName, lastName, id } = req.body;
+  const userId = "659d7627fad7d552d967e766";
+  const contactId = "659d7627fad7d552d967e767";
+  const addressId = "659d7627fad7d552d967e768";
+  const updateData = "This is updated Data";
+
+  const users = await User.find({ _id: id }).updateOne(
+    {},
+    { firstName: firstName, lastName: lastName }
+  );
+
+  update data with nested child node.
+  const updatedUser = await User.updateOne(
+    {
+      _id: userId,
+      "contacts._id": contactId,
+      "contacts.addresses._id": addressId,
+    },
+    {
+      $set: {
+        "contacts.$.addresses.$[addr].addressLine1": "This is address line 2",
+        "contacts.$.addresses.$[addr].addressLine2": "This is address line 1",
+      },
+    },
+    {
+      arrayFilters: [
+        {
+          "addr._id": addressId,
+        },
+      ],
+    }
+  );
+  return res.json(users);
+});
+*/
