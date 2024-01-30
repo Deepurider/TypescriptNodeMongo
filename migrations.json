@@ -1,0 +1,10 @@
+{
+  "uri": "mongodb://127.0.0.1:27017",
+  "database": "admin",
+  "options": {
+    "useNewUrlParser": true,
+    "useUnifiedTopology": true
+  },
+  "migrationsDir": "src/domain/migrations",
+  "migrationsCollection": "migrations_changelog"
+}

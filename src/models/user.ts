@@ -2,37 +2,35 @@ import mongoose, { Document, PaginateModel, Schema } from "mongoose";
 import { UserStatus } from "../common/enum/user-status";
 import mongoosePaginate from "mongoose-paginate-v2";
 export interface User extends Document {
-  Name: string;
-  Email: string;
-  Phone: string;
-  Password: string;
-  Status: string;
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  status: string;
 }
 const userSchema = new Schema<User>({
-  Name: {
+  name: {
     type: String,
     required: true,
   },
-  Email: {
+  email: {
     type: String,
     required: [true, "Please Provide User Email."],
-    unique: true,
     lowercase: true,
-    trim: true,
   },
-  Phone: {
+  phone: {
     type: String,
     required: true,
     maxlength: 10,
   },
-  Password: {
+  password: {
     type: String,
     required: true,
   },
-  Status: {
+  status: {
     type: String,
     required: true,
-    enum: Object.values(UserStatus).filter((x) => typeof x === "string"),
+    enum: Object.values(UserStatus),
   },
 });
 
