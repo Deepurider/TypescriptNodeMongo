@@ -5,7 +5,7 @@ import cors, { CorsOptions } from "cors";
 import session from "express-session";
 import { apiRequestLogger } from "./middlewares/app-logger.middleware";
 
-export const runApp = async () => {
+const runApp = async () => {
   const corsConfig: CorsOptions = {
     origin: process.env?.ORIGIN_ALLOW?.split(",") ?? "http://localhost:4200",
   };
@@ -23,7 +23,10 @@ export const runApp = async () => {
   app.use("/api/v1", appRouter);
 
   const port = parseInt((process.env.PORT ?? 3000).toString()) || 3000;
-  app.listen(port, () => {
+  await app.listen(port, () => {
     console.log(`SERVER IS RUNNING ON PORT: ${port}`);
   });
 };
+
+
+export { runApp }

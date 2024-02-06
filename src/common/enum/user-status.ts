@@ -1,4 +1,6 @@
-export enum UserStatus {
+enum UserStatus {
   Enabled = "Enabled",
   Disabled = "Disabled",
 }
+
+export { UserStatus }
