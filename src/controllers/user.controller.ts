@@ -1,3 +1,4 @@
+import { UserSession } from "../models/customs/user-session";
 import { User, UserModel } from "../models/user";
 import { asyncHandler } from "../utils/async-handler.util";
 import { Request, Response } from "express";
@@ -12,6 +13,16 @@ const getUserById = asyncHandler(async (req: Request | any, res: Response) => {
   const users = await UserModel.findById(req["params"]?._id);
   res.status(200).json({
     users,
+  });
+});
+
+const getSelf = asyncHandler(async (req: Request | any, res: Response) => {
+  const userSession = req.session.userSession as UserSession;
+  const user = await UserModel.findOne({
+    _id: userSession._id
+  });
+  res.status(200).json({
+    user,
   });
 });
 
@@ -66,9 +77,10 @@ const deleteUser = asyncHandler(async (req: Request | any, res: Response) => {
 export {
   getUsers,
   getUserById,
+  getSelf,
   postUser,
   patchUser,
   deleteAllUser,
   deleteUser,
-  putUser
+  putUser,
 };

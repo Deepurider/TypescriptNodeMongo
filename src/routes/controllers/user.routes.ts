@@ -7,6 +7,7 @@ import {
   patchUser,
   putUser,
   postUser,
+  getSelf,
 } from "../../controllers/user.controller";
 import { authorize } from "../../middlewares/authorize";
 
@@ -14,6 +15,7 @@ const router = Router();
 
 router.use(authorize);
 router.route("/").get(getUsers);
+router.route("/me").get(getSelf);
 router.route("/:_id").get(getUserById);
 router.route("/:_id").put(putUser);
 router.route("/").patch(patchUser);
