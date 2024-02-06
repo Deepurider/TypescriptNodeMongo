@@ -70,5 +70,5 @@ export {
   patchUser,
   deleteAllUser,
   deleteUser,
-  putUser,
+  putUser
 };

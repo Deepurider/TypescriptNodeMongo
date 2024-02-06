@@ -8,11 +8,12 @@ import {
   putUser,
   postUser,
 } from "../../controllers/user.controller";
-import { postUserValidation } from "../../middlewares/validations/user.middleware";
+import { authorize } from "../../middlewares/authorize";
 
 const router = Router();
 
-router.use(postUserValidation).route("/").get(getUsers);
+router.use(authorize);
+router.route("/").get(getUsers);
 router.route("/:_id").get(getUserById);
 router.route("/:_id").put(putUser);
 router.route("/").patch(patchUser);
